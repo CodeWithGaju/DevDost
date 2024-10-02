@@ -1,0 +1,20 @@
+{
+  "name": "devdost",
+  "version": "1.0.0",
+  "description": "Developer Friendship Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev" : "nodemon src/app.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Gajanand Khatriya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
