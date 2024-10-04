@@ -1,0 +1,8 @@
+- DevDost is a web application where Developers connect & intract to each other
+   - npm init command is run and package.json file created
+   - Installing Express js into our project
+   - node-module is created with 
+   - created a src folder
+       - created a middleware and config folder to store specific files
+   - git init command run
+   - npm i mongoose command run and install mongoose into project to connect with database 
