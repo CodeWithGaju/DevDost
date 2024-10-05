@@ -13,7 +13,7 @@ app.post("/signup",async(req,res)=>{
         await user.save();
         res.send("Data is Successfully stored in Database.")
    }catch(err){
-     res.status(400).send("Error while saving the user. ", err)
+     res.status(400).send("Error while saving the user. "+err)
    }
 
 })
@@ -112,12 +112,25 @@ app.delete("/delete/users",async(req,res)=>{
      res.status(400).send("something went wrong");
   }
 })
-// findByIdAndDelete()
-app.patch("/update/userId",async(req,res)=>{
-  const user_id = req.body._id;
+// findByIdAndUpdate() with API level Sanitization
+app.patch("/update/:userId",async(req,res)=>{
+  const user_id = req?.params?.userId;
   const user_Data = req.body;
+
   try{
-    const updatedIdUser = await User.findByIdAndUpdate(user_id,user_Data,{returnDocument:"after"});//we use findByIdAndUpdate(user_id,user_Data)this instead of this fideByIdAndUpdate(user_id,{ $set:user_Data}) because both are same
+    //start->Api Level Sanitization
+    const ALLOWED_USERDATA = ["photoUrl","about","skills"];
+    const isValidData = Object.keys(user_Data).every((k)=>ALLOWED_USERDATA.includes(k));
+    if(!isValidData){
+      res.status(400).send("Restricted Data! Cannot be updated.");
+      return;
+    }
+    if(user_Data?.skills.length>10){
+      res.status(400).send("You cannot store more than 10 skills");
+      return;
+    }
+    //end-> here
+    const updatedIdUser = await User.findByIdAndUpdate(user_id,user_Data,{returnDocument:"after",runValidators:true});//we use findByIdAndUpdate(user_id,user_Data)this instead of this fideByIdAndUpdate(user_id,{ $set:user_Data}) because both are same
     if(!updatedIdUser){
       res.status(401).send("User not Found! Please re-check the name you entered");
     }
@@ -125,7 +138,7 @@ app.patch("/update/userId",async(req,res)=>{
     res.status(200).send(updatedIdUser);
     }
   }catch(err){
-     res.status(400).send("something went wrong");
+     res.status(400).send("Update Failed! Error:"+err.message);
   }
 })
 
