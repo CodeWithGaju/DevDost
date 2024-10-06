@@ -37,8 +37,9 @@ const userSchema = new mongoose.Schema({
     },
     gender:{
         type: String,
+        uppercase: true,
         validate:(value) => {
-             if(!["Male","Female","other"].includes(value)){
+             if(!["MALE","FEMALE","OTHER"].includes(value)){
                 throw new Error("Invalid Gender value Please verify you gender correct");
              }
         }
@@ -54,7 +55,8 @@ const userSchema = new mongoose.Schema({
     },
     about:{
        type: String,
-       default: "Tell Something about yourSelf Here..."
+       default: "Tell Something about yourSelf Here...",
+       maxLength: 80
     },
     skills:{
         type: [String],

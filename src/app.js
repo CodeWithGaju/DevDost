@@ -1,21 +1,59 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const User  = require("./models/user");
+const {validationSignUp} = require("./utils/validation");
+const bcrypt = require('bcrypt');
+
 const app = express();
 
 
 app.use(express.json()); // this will convert json into javascript function which is passed when http://localhost:2001/signup or other request is called
 
 app.post("/signup",async(req,res)=>{
+
    try{
-        //creatin new instance of the UserModel and put userObj to store data inside database 
-        const user = new User(req.body); //req.body contain all json data which is passed at http://localhost:2001/signup request time and those json data is converted as javasript object using  express.json() method
+         validationSignUp(req);
+         const {firstName,lastName,emailId,password,age,gender,about,photoUrl,skills} = req.body;
+
+         //Encrypting password using bcrypt.hash()
+          const  hashPassword =await bcrypt.hash(password,10);
+         //creatin new instance of the UserModel and put userObj to store data inside database 
+        const user = new User({
+          firstName,
+          lastName,
+          emailId,
+          password:hashPassword,
+          age,
+          gender,
+          about,
+          photoUrl,
+          skills
+        }); //req.body contain all json data which is passed at http://localhost:2001/signup request time and those json data is converted as javasript object using  express.json() method
         await user.save();
         res.send("Data is Successfully stored in Database.")
    }catch(err){
      res.status(400).send("Error while saving the user. "+err)
    }
 
+})
+//login API emailId and password check
+app.post("/login",async(req,res)=>{
+    const {emailId,password} = req.body;
+    const isValidEmail = await User.findOne({emailId});
+    if(!isValidEmail){
+      res.status(404).send("Invalid credentials!.")
+    }
+    else{
+      const hashPassword =  isValidEmail?.password;
+      const isValidUser = await bcrypt.compare(password,hashPassword);
+      if(!isValidUser){
+        res.status(404).send("Invalid credential Try Again later..")
+      }
+      else{
+        res.send("You Login Successfully to DataBase.")
+      }
+    }
+  
 })
 // start-> Fetching or Reading Data from Database
 app.get("/feed",async(req,res)=>{
