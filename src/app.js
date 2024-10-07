@@ -1,13 +1,17 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const User  = require("./models/user");
+const {userAuth} = require("./middleware/auth");
 const {validationSignUp} = require("./utils/validation");
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const dotenv = require("dotenv");
 
 const app = express();
 
-
 app.use(express.json()); // this will convert json into javascript function which is passed when http://localhost:2001/signup or other request is called
+app.use(cookieParser()) // this middleware is used to read cookies which is passed by login and it helps to access the cookie inside get profile request 
 
 app.post("/signup",async(req,res)=>{
 
@@ -39,21 +43,42 @@ app.post("/signup",async(req,res)=>{
 //login API emailId and password check
 app.post("/login",async(req,res)=>{
     const {emailId,password} = req.body;
-    const isValidEmail = await User.findOne({emailId});
-    if(!isValidEmail){
+    const user = await User.findOne({emailId});
+    if(!user){
       res.status(404).send("Invalid credentials!.")
     }
     else{
-      const hashPassword =  isValidEmail?.password;
+      const hashPassword =  user?.password;
       const isValidUser = await bcrypt.compare(password,hashPassword);
       if(!isValidUser){
         res.status(404).send("Invalid credential Try Again later..")
       }
       else{
+        const token = await jwt.sign({_id: user._id}, process.env.TOKEN_AUTH ,{expiresIn: '7d'});
+        res.cookie("token", token, {expires: new Date(Date.now() + 1 * 3600000)});
         res.send("You Login Successfully to DataBase.")
       }
     }
   
+})
+// Profile access using email and password
+app.get("/profile",userAuth, async(req,res)=>{
+  try{
+     const user = req.user;
+     res.send(user)
+  }catch(err){
+    res.status(400).send("Something went wrong "+ err)
+  }
+})
+// sendConnectionRequest api request and use uerAuth for user Authentication
+app.get("/sendConnectionRequest",userAuth,(req,res)=>{
+    try{
+      const user = req.user;
+      res.send(user.firstName+" "+user.lastName+" send the Connection Request:");
+    }
+    catch(err){
+      res.status(400).send("Error: "+err);
+    }
 })
 // start-> Fetching or Reading Data from Database
 app.get("/feed",async(req,res)=>{

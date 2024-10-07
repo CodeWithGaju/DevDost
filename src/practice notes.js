@@ -166,4 +166,21 @@ app.get("/users/:userid/:name/:pass",(req,res)=>{
     // })
 //end-}
 
-//
+// //app.get("/profile",userAuth, async(req,res)=>{
+//     try{
+//         const user = req.user();
+//         res.send(user);
+//       }catch(err){
+//         res.status(400).send("Something went wrong "+err)
+//       }
+//     })
+//     // start-> Fetching or Reading Data from Database
+//     app.get("/feed",async(req,res)=>{
+    
+//       try{ 
+//          const allUser = await User.find({});
+//          res.send(allUser);
+//       }catch(err){
+//          res.status(400).send("Something went wrong");
+//       }
+//     })

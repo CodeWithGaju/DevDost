@@ -29,3 +29,14 @@
      - creating new post api for login and here we check email id is valid if it is then we check 
        password which user send through request.body with password in validEmail Data if it and then
        we use bcrypt.compare(<req.body.password>, <hashPassword which is in Database>)
+    - Cookie parser is installed using command => npm i cookie-parser and then importing
+      its module in app.js file and app.use(cookieParser()) function run because// this middleware is used to read cookies which is passed by login and it helps to access the cookie inside get profile request 
+
+    - jwt.io means jsonwebtoken is installed using command ==> npm i jsonwebtoken
+      forgenerating web token which passed as a cookie to request for further authentication 
+        -  const token = await jwt.sign({_id: user._id},"DevDost2024"); is used to generate a new token which is passed into req.cookie() as a parameter
+
+    - we can expire our cookies and tokens if we want to according to our requirements 
+      - In cookie we can initialize as parameter in =>> res.cookie("token", token,
+        {expires: new Date(Date.now() + 1 * 3600000)});
+      - In Token we can do ==> const token = await jwt.sign({_id: user._id},"DevDost2024",{expiresIn: '7d'});
