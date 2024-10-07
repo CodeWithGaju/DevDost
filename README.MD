@@ -40,3 +40,5 @@
       - In cookie we can initialize as parameter in =>> res.cookie("token", token,
         {expires: new Date(Date.now() + 1 * 3600000)});
       - In Token we can do ==> const token = await jwt.sign({_id: user._id},"DevDost2024",{expiresIn: '7d'});
+    - Writing Schema level helper method to  offload the things like jwt.sign() method to 
+      generate token and brcypt.compare() function to compare the password given by user and hashpassword of database

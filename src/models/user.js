@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -62,6 +65,21 @@ const userSchema = new mongoose.Schema({
         type: [String],
     }
 },{timestamps:true})
+
+ userSchema.methods.jwtToken = async function(){ //note: always use simple function here not a arrow back function because it works in this foramt if you use arrow function it crash the program
+    const user = this;
+
+    const token = await jwt.sign({_id: user.id}, process.env.TOKEN_AUTH, {expiresIn: "7d"} );
+
+    return token;
+ }
+
+  userSchema.methods.isValidUser = async function(passwordInputByUser){
+    const user = this;
+    const hashPassword = user.password;
+    const isValidUser = await bcrypt.compare(passwordInputByUser,hashPassword);//parameters order matters a lot because if you interchange the order like(hashPassword,passwordInputByUser) in this order it fails the code
+    return isValidUser;
+  }
 
 const User = mongoose.model("User", userSchema);
 

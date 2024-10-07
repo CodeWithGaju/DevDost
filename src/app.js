@@ -48,13 +48,13 @@ app.post("/login",async(req,res)=>{
       res.status(404).send("Invalid credentials!.")
     }
     else{
-      const hashPassword =  user?.password;
-      const isValidUser = await bcrypt.compare(password,hashPassword);
+      const isValidUser = await user.isValidUser(password);
       if(!isValidUser){
         res.status(404).send("Invalid credential Try Again later..")
       }
       else{
-        const token = await jwt.sign({_id: user._id}, process.env.TOKEN_AUTH ,{expiresIn: '7d'});
+        const token = await user.jwtToken();// jwtToken is method which is a userSchema method meand a Schema level method is used to put all the logic inside jwtToken() method which return token
+        console.log(token)
         res.cookie("token", token, {expires: new Date(Date.now() + 1 * 3600000)});
         res.send("You Login Successfully to DataBase.")
       }
