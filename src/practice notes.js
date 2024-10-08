@@ -65,10 +65,10 @@ const app = express();
 //     res.send({firstName: "Gajanand",lastName: "khatriya"});
 // })
 //7. so we can get value which passed in http  API  request like http://localhost:2001/users/201/gaju/2003 so getting the value 707 we use req.param we get values as params are { userid: '201', name: 'gaju', pass: '2003' } so there we can use ":" is help us to declare dynamic routes
-app.get("/users/:userid/:name/:pass",(req,res)=>{
-    console.log(req.params)
-    res.send({firstName: "Gajanand",lastName: "khatriya"});
-})
+// app.get("/users/:userid/:name/:pass",(req,res)=>{
+//     console.log(req.params)
+//     res.send({firstName: "Gajanand",lastName: "khatriya"});
+// })
 
 
 
