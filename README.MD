@@ -42,3 +42,15 @@
       - In Token we can do ==> const token = await jwt.sign({_id: user._id},"DevDost2024",{expiresIn: '7d'});
     - Writing Schema level helper method to  offload the things like jwt.sign() method to 
       generate token and brcypt.compare() function to compare the password given by user and hashpassword of database.
+    - Making and dividing api calls or request under its particular routes like all the authentication api's request under its specific routes for that using express.Router() 
+
+- express.Router() is use for Routing and maintaining our api's according to its specific 
+  routes like  
+   ## authRouter
+    POST /signup
+    POST /login
+    POST /logout
+  and all are mention in apiList.md
+
+- validate /profile/edit using validationUpdateProfile(req) function for checking all
+  fields before updating it. 
