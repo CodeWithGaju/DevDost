@@ -14,4 +14,32 @@ const validationSignUp = (req) =>{
      }
 }
 
-module.exports = {validationSignUp};
+const validationUpdateProfile = (req) => {
+   try{
+   const allowedFieldsData = ["firstName","lastName","gender","age","about","photoUrl","skills"];
+   const {firstName,lastName,emailId,password,skills,about,photoUrl} = req?.body;
+   if(firstName?.length > 15 || lastName?.length > 15){
+      throw new Error("Your FisrtName & LastName should be under 15 charcters");
+   }else if(about?.length > 80){
+      throw new Error("Your About must be at least under 80 charcaters.")
+   }
+   else if(!photoUrl === undefined){
+      if(!validator.isURL(photoUrl)){
+         throw new Error("Invalid photo URL! Please Enter Valid URL")
+      }
+   }
+  
+   else if(skills?.length > 10){
+      throw new Error("Your cannot pass skills more than 10.")
+   }
+
+   const isEditAllowed =  Object.keys(req?.body).every((field)=> allowedFieldsData.includes(field));
+
+   return isEditAllowed;
+   
+ }catch(err){
+   throw new Error(err);
+ }
+
+}
+module.exports = {validationSignUp,validationUpdateProfile};
