@@ -54,3 +54,4 @@
 
 - validate /profile/edit using validationUpdateProfile(req) function for checking all
   fields before updating it. 
+- created a update password api in routes folder profile.js file so user can updated his profile  

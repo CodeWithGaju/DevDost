@@ -1,6 +1,9 @@
 const express = require("express");
 const {userAuth} = require("../middleware/auth");
-const {validationUpdateProfile} = require("../utils/validation")
+const {validationUpdateProfile,validatePassword} = require("../utils/validation")
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
+
 const profileRouter = express.Router();
 // Profile access using email and password
 profileRouter.get("/profile/view",userAuth, async(req,res)=>{
@@ -31,6 +34,28 @@ profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
 
 })
 
-
+profileRouter.patch("/profile/updatepassword",userAuth,async(req,res)=>{
+    try{
+        const user = req.user;
+        console.log(validatePassword(req));
+       if(!validatePassword(req)){
+        throw new Error("Invalid Password Please Enter valid password");
+       }
+       else{
+         const {password}  = req.body;
+         const hashPassword = await bcrypt.hash(password, 10);
+         //we can update password using to ways below mentioned
+         //1.
+          user.password = hashPassword;
+          await user.save();
+        //2.
+        // await User.findByIdAndUpdate(user._id,{password:hashPassword});
+          res.cookie("token", null,{expires: new Date(Date.now())});// after updating password clear cookies so user have to login again with new password 
+         res.send("Your Password has been updated Successfully");
+       }
+    }catch(err){
+      res.status(400).send("while updating profile Password"+err);
+    }
+})
 
 module.exports = {profileRouter}

@@ -42,4 +42,19 @@ const validationUpdateProfile = (req) => {
  }
 
 }
-module.exports = {validationSignUp,validationUpdateProfile};
+
+const validatePassword = (req)=>{
+   try{
+   const password = req.body.password;
+   if(!validator.isStrongPassword(password)){
+      throw new Error("Please Enter strong password");
+   }
+   else{
+      return true;
+   }
+}catch(err){
+   throw new Error(err);
+}
+}
+
+module.exports = {validationSignUp,validationUpdateProfile,validatePassword};
