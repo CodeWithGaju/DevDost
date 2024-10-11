@@ -11,10 +11,15 @@
     PATCH /profile/forgetpassword
 
  ## ConnectionRequestRouter
-    POST /request/send/interested/:userId
-    POST /request/send/ignored/:userId
-    POST /request/review/interested/:requestId
-    POST /request/review/rejected/:requestId
+   # SEND REQUEST
+    POST /request/send/:interested/:userId 
+    
+    above post request has dynamic parameters like if we pass [interested,ignore] and then
+    userId of the user whom you want to send the request  
+   
+   # REVIEW
+    POST /request/review/:status/:requestId
+
 
  ## userRouter
    GET /user/connections

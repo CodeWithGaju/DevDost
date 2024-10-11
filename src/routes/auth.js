@@ -38,11 +38,13 @@ authRouter.post("/login",async(req,res)=>{
     const user = await User.findOne({emailId});
     if(!user){
       res.status(404).send("Invalid credentials!.")
+      return;
     }
     else{
       const isValidUser = await user.isValidUser(password);
       if(!isValidUser){
-        res.status(404).send("Invalid credential Try Again later..")
+        res.status(404).send("Invalid credential Try Again later..");
+        return;
       }
       else{
         const token = await user.jwtToken();// jwtToken is method which is a userSchema method meand a Schema level method is used to put all the logic inside jwtToken() method which return token

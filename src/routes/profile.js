@@ -20,6 +20,7 @@ profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
   try{
      if(!validationUpdateProfile(req)){
        throw new Error("Invalid Edit Request...!");
+       return;
      }
      else{
       const loggedInuser = req.user;
@@ -40,6 +41,7 @@ profileRouter.patch("/profile/updatepassword",userAuth,async(req,res)=>{
         console.log(validatePassword(req));
        if(!validatePassword(req)){
         throw new Error("Invalid Password Please Enter valid password");
+        return;
        }
        else{
          const {password}  = req.body;

@@ -55,3 +55,32 @@
 - validate /profile/edit using validationUpdateProfile(req) function for checking all
   fields before updating it. 
 - created a update password api in routes folder profile.js file so user can updated his profile  
+
+- created a file connectionRequest.js in models folder
+ # Schema creation
+  - created a variable name connectionRequestSchema and assigned a mongoose.schema({there
+    is structure of data }) what fields you want store and its types
+  - .pre() ---> connectionRequestSchema.pre() function is used here to check that user
+     cannot send request to itself   
+ # Model creation
+  - then created a variable name connectionRequest and assigned mongoose.model("name 
+    of model",<Schema variable which in our case is connectionRequestSchema>)
+ # Exported the variables
+  - using module.exports = connnectionRequest --variable name which is model 
+  
+- created a /request/send/:status/:userId api for sending request to another user
+  request route which already created by us in routes folder is used here 
+  - here we created s status dynamic using params with validations like you can pass 
+   ["interested","ignored] other than you can not pass if you pass it
+    throw error Invalid Status type
+  - and also pass userId dynamic using params means we can access it later using 
+    req.params
+- created a /request/review/:status/:requestId api for reviewing request means a 
+  user can accepted and rejected if he wanted to and its also with validation means
+  you can only pass status as ["accepted","rejected"] other than this it throw error
+  invalid status type
+
+- created  a file user.js in routes folder for /user/request/recieved so user can see 
+  how many connection request they received from other users
+  - using "ref" field  in connectionRequest file in connectionRequestSchema for 
+    referncing User Collection (Model) so we can use populate function to get details  what we want from using fromUserId field 
