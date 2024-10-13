@@ -84,3 +84,19 @@
   how many connection request they received from other users
   - using "ref" field  in connectionRequest file in connectionRequestSchema for 
     referncing User Collection (Model) so we can use populate function to get details  what we want from using fromUserId field 
+  - created a /user/connection api to get logged in user connections whom they connected
+    to and 
+  - created a /user/feed api so a user can see all the users card whom they can send 
+    connection request (interested,ignore) and only all those user who are not send connection request to loggedIn User and also those whom logged user not send connection request  are shown and all connections,request send or received are not
+    shown in feed api data and while creating this api used a mongoDb $or:,$and:,%nin:,$ne: operators
+
+  # pagination logic 
+   - /feed?page=1&limit=10 => 1-10 => .skip(0) & .limit(10)
+   - /feed?page=2&limit=10 => 11-20 => .skip(10) & .limit(10)
+   - /feed?page=1&limit=10 => 21-30 => .skip(20) & .limit(10)
+   - /feed?page=1&limit=10 => 31-40 => .skip(30) & .limit(10)  
+
+ # formula
+   skip = (page - 1)*limit;
+
+   - /feed?page=1&limit=10 => 1-10 => .skip(skip) & .limit(10);

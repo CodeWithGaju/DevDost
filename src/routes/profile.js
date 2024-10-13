@@ -9,9 +9,9 @@ const profileRouter = express.Router();
 profileRouter.get("/profile/view",userAuth, async(req,res)=>{
     try{
        const user = req.user;
-       res.send(user)
+       res.json({message:"User Profile Data Fetched Successfully. ",data:user})
     }catch(err){
-      res.status(400).send("Something went wrong "+ err)
+      res.status(400).json({message:"Something went wrong "+ err});
     }
   })
 
@@ -30,7 +30,7 @@ profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
 
      }
   }catch(err){
-     res.status(400).send("while Updating profile get a "+err)
+     res.status(400).json({message:"while Updating profile get a "+err});
   }
 
 })
@@ -38,7 +38,6 @@ profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
 profileRouter.patch("/profile/updatepassword",userAuth,async(req,res)=>{
     try{
         const user = req.user;
-        console.log(validatePassword(req));
        if(!validatePassword(req)){
         throw new Error("Invalid Password Please Enter valid password");
         return;
@@ -53,10 +52,10 @@ profileRouter.patch("/profile/updatepassword",userAuth,async(req,res)=>{
         //2.
         // await User.findByIdAndUpdate(user._id,{password:hashPassword});
           res.cookie("token", null,{expires: new Date(Date.now())});// after updating password clear cookies so user have to login again with new password 
-         res.send("Your Password has been updated Successfully");
+         res.json({message:"Your Password has been updated Successfully"});
        }
     }catch(err){
-      res.status(400).send("while updating profile Password"+err);
+      res.status(400).json({message:"while updating profile Password"+err});
     }
 })
 

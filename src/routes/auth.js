@@ -25,9 +25,9 @@ authRouter.post("/signup",async(req,res)=>{
            skills
          }); //req.body contain all json data which is passed at http://localhost:2001/signup request time and those json data is converted as javasript object using  express.json() method
          await user.save();
-         res.send("Data is Successfully stored in Database.")
+         res.json({message:"Data is Successfully stored in Database."});
     }catch(err){
-      res.status(400).send("Error while saving the user. "+err)
+      res.status(400).json({message:"Error while saving the user. "+err});
     }
  
  })
@@ -37,19 +37,19 @@ authRouter.post("/login",async(req,res)=>{
     const {emailId,password} = req.body;
     const user = await User.findOne({emailId});
     if(!user){
-      res.status(404).send("Invalid credentials!.")
+      res.status(404).json({message:"Invalid credentials!."})
       return;
     }
     else{
       const isValidUser = await user.isValidUser(password);
       if(!isValidUser){
-        res.status(404).send("Invalid credential Try Again later..");
+        res.status(404).json({message:"Invalid credential Try Again later.."});
         return;
       }
       else{
         const token = await user.jwtToken();// jwtToken is method which is a userSchema method meand a Schema level method is used to put all the logic inside jwtToken() method which return token
         res.cookie("token", token, {expires: new Date(Date.now() + 1 * 3600000)});
-        res.send("You Login Successfully to DataBase.")
+        res.json({message:"You Login Successfully to DataBase."})
       }
     }
   
@@ -59,7 +59,7 @@ authRouter.post("/login",async(req,res)=>{
  authRouter.post("/logout",(req,res)=>{
      res.cookie("token", null ,{expires: new Date(Date.now())});
      
-     res.send("You Logout Successfully");
+     res.json({message:"You Logout Successfully"});
     
  })
 
