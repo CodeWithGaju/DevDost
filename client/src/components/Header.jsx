@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useAuthstore } from '../store/useAuthStore'
 import { Link } from 'react-router-dom';
-import {Flame,User,Heart,LogOut,Menu,Home} from "lucide-react"
+import {Flame,User,Heart,LogOut,Menu,Home} from "lucide-react";
 
 const Header = () => {
     const {authUser,logOut} = useAuthstore();
