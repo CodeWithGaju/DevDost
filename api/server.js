@@ -31,7 +31,7 @@ app.use(cookieParser()) // this middleware is used to read cookies which is pass
 app.use("/api/auth",authRouter);
 app.use("/api/profile",profileRouter);
 app.use("/api/request",requestRouter);
-app.use("/api/user",userRouter);
+app.use("/api/user",userRouter);  
 app.use("/api/message",messageRouter);
 
 if(process.env.NODE_ENV === 'production'){
