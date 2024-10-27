@@ -100,3 +100,8 @@
    skip = (page - 1)*limit;
 
    - /feed?page=1&limit=10 => 1-10 => .skip(skip) & .limit(10);
+
+ # Very Important 
+  - If you getting this type of error then you have just do 1 thing you have to  (off)   
+    your CORS Extension which you install in chrome extensions thats it because this extension will remove or block the patch api method request from Access-Control-Allow-Methods  when this extension is (on) mode
+    ## Error- Access to XMLHttpRequest at 'http://localhost:2001/api/profile/edit' from origin 'http://localhost:5173' has been blocked by CORS policy: Method PATCH is not allowed by Access-Control-Allow-Methods in preflight response.
