@@ -35,9 +35,9 @@ app.use("/api/user",userRouter);
 app.use("/api/message",messageRouter);
 
 if(process.env.NODE_ENV === 'production'){
-  app.use(express.static(path.join("/client/dist/index.html")))
+  app.use(express.static(path.join(__dirname,"/client/dist/index.html")))
   app.get("*",(req,res)=>{
-    res.sendFile(path.resolve("client","dist","index.html"))
+    res.sendFile(path.resolve(__dirname,"client","dist","index.html"))
   })
 }
 
