@@ -21,7 +21,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-const __dirname = path.resolve();
+path.resolve();
 
 initializeSocket(httpServer)
 
