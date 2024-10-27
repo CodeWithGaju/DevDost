@@ -13,6 +13,7 @@
     "@react-spring/web": "^9.7.5",
     "@reduxjs/toolkit": "^2.3.0",
     "axios": "^1.7.7",
+    "devdost": "file:..",
     "emoji-picker-react": "^4.12.0",
     "lucide-react": "^0.453.0",
     "react": "^18.3.1",
